@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shelter Listing Submission — Bastet</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ep: #4A1942;
+    --ep-light: #f9f4f9;
+    --gold: #C9A84C;
+    --gold-light: #fdf8ee;
+    --cream: #FAF7F2;
+    --dark: #1A1A1A;
+    --mid: #666666;
+    --light-border: #E8E2D9;
+    --light-bg: #F5F2EE;
+    --success-bg: #EEF7EE;
+    --success-border: #2D7D2D;
+    --success-text: #2D7D2D;
+  }
+
+  body {
+    background: var(--cream);
+    color: var(--dark);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .top-rule {
+    height: 3px;
+    background: linear-gradient(90deg, var(--ep) 0%, var(--gold) 100%);
+  }
+
+  nav {
+    padding: 18px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--light-border);
+  }
+
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: var(--ep);
+    text-transform: uppercase;
+  }
+
+  .nav-tag {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mid);
+  }
+
+  .page-wrap {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .page-header {
+    margin-bottom: 40px;
+  }
+
+  .page-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 300;
+    color: var(--ep);
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .page-header p {
+    font-size: 15px;
+    color: var(--mid);
+    line-height: 1.7;
+    max-width: 520px;
+  }
+
+  .gold-rule {
+    width: 48px;
+    height: 2px;
+    background: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .type-toggle {
+    display: flex;
+    border: 1px solid var(--light-border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 36px;
+  }
+
+  .type-btn {
+    flex: 1;
+    padding: 11px 16px;
+    border: none;
+    background: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 300;
+    cursor: pointer;
+    color: var(--mid);
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+  }
+
+  .type-btn.active {
+    background: var(--ep);
+    color: #FAF7F2;
+    font-weight: 500;
+  }
+
+  .type-btn:not(.active):hover {
+    background: var(--light-bg);
+  }
+
+  .form-section {
+    margin-bottom: 32px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--light-border);
+  }
+
+  .field {
+    margin-bottom: 16px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--mid);
+    margin-bottom: 6px;
+    letter-spacing: 0.01em;
+  }
+
+  .required {
+    color: var(--gold);
+    margin-left: 2px;
+  }
+
+  .field input[type="text"],
+  .field input[type="email"],
+  .field input[type="tel"],
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid var(--light-border);
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--dark);
+    background: white;
+    transition: border-color 0.15s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--ep);
+  }
+
+  .field textarea {
+    height: 90px;
+    resize: vertical;
+    line-height: 1.6;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 10px 0 4px;
+  }
+
+  .radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--dark);
+    cursor: pointer;
+    margin-bottom: 0;
+  }
+
+  .radio-group input[type="radio"] {
+    width: 15px;
+    height: 15px;
+    accent-color: var(--ep);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .field-note {
+    font-size: 12px;
+    color: var(--mid);
+    margin-top: 5px;
+    font-style: italic;
+  }
+
+  .submit-wrap {
+    margin-top: 8px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--ep);
+    color: #FAF7F2;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+
+  .submit-btn:hover { opacity: 0.88; }
+  .submit-btn:active { opacity: 0.75; transform: scale(0.99); }
+
+  .submit-note {
+    font-size: 12px;
+    color: var(--mid);
+    text-align: center;
+    margin-top: 10px;
+    font-style: italic;
+  }
+
+  .success-card {
+    display: none;
+    background: var(--success-bg);
+    border: 1px solid var(--success-border);
+    border-radius: 10px;
+    padding: 32px 28px;
+    text-align: center;
+    margin-top: 16px;
+  }
+
+  .success-card h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 300;
+    color: var(--success-text);
+    margin-bottom: 10px;
+  }
+
+  .success-card p {
+    font-size: 14px;
+    color: var(--success-text);
+    line-height: 1.7;
+  }
+
+  footer {
+    border-top: 1px solid var(--light-border);
+    padding: 24px 48px;
+    text-align: center;
+  }
+
+  footer p {
+    font-size: 11px;
+    color: var(--mid);
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 520px) {
+    nav { padding: 16px 20px; }
+    .page-wrap { padding: 36px 20px 60px; }
+    .page-header h1 { font-size: 32px; }
+    .field-row { grid-template-columns: 1fr; }
+    footer { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-rule"></div>
+
+<nav>
+  <span class="nav-brand">Bastet</span>
+  <span class="nav-tag">Shelter Portal</span>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="page-header">
+    <div class="gold-rule"></div>
+    <h1>Shelter listing submission</h1>
+    <p>Submit a new shelter or request an update to an existing listing. All submissions require a valid organizational email address and are reviewed manually before any change goes live.</p>
+  </div>
+
+  <div class="type-toggle">
+    <button class="type-btn active" id="btn-new" onclick="setType('new')">New shelter</button>
+    <button class="type-btn" id="btn-update" onclick="setType('update')">Update existing listing</button>
+  </div>
+
+  <form id="shelter-form">
+    <input type="hidden" id="submission-type" value="New shelter">
+
+    <div class="form-section">
+      <div class="section-label">Shelter information</div>
+
+      <div class="field">
+        <label>Shelter name <span class="required">*</span></label>
+        <input type="text" id="shelter-name" placeholder="Full organization name" required>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>City <span class="required">*</span></label>
+          <input type="text" id="city" placeholder="City" required>
+        </div>
+        <div class="field">
+          <label>State <span class="required">*</span></label>
+          <select id="state" required>
+            <option value="">Select state</option>
+            <option value="SC" selected>South Carolina</option>
+            <option value="NC">North Carolina</option>
+            <option value="GA">Georgia</option>
+            <option value="VA">Virginia</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Is the shelter address public? <span class="required">*</span></label>
+        <div class="radio-group">
+          <label><input type="radio" name="address-public" value="Yes" required> Yes — address can be shown</label>
+          <label><input type="radio" name="address-public" value="No"> No — call for address only</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Street address</label>
+        <input type="text" id="address" placeholder="Street address, city, state, zip">
+        <p class="field-note">Leave blank if address is confidential.</p>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-label">Contact</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Phone number</label>
+          <input type="tel" id="phone" placeholder="(000) 000-0000">
+        </div>
+        <div class="field">
+          <label>Hotline number</label>
+          <input type="tel" id="hotline" placeholder="(000) 000-0000">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-label">Details</div>
+      <div class="field">
+        <label>Pet friendly?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="pet-friendly" value="Yes"> Yes</label>
+          <label><input type="radio" name="pet-friendly" value="No"> No</label>
+          <label><input type="radio" name="pet-friendly" value="Unknown" checked> Unknown</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Additional notes</label>
+        <textarea id="notes" placeholder="Any other details, corrections, or context we should know…"></textarea>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-label">Your information</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Your name <span class="required">*</span></label>
+          <input type="text" id="submitter-name" placeholder="Full name" required>
+        </div>
+        <div class="field">
+          <label>Your email <span class="required">*</span></label>
+          <input type="email" id="submitter-email" placeholder="email@organization.org" required>
+        </div>
+      </div>
+      <p class="field-note">Submissions from organizational email addresses are prioritized for review.</p>
+    </div>
+
+    <div class="submit-wrap">
+      <button type="submit" class="submit-btn">Submit listing</button>
+      <p class="submit-note">All submissions are reviewed manually. Nothing goes live automatically.</p>
+    </div>
+  </form>
+
+  <div class="success-card" id="success">
+    <h2>Submission received</h2>
+    <p>Thank you for helping keep Bastet accurate. All listings are reviewed before any changes go live. If we have questions we'll follow up at the email you provided.</p>
+  </div>
+
+</div>
+
+<footer>
+  <p>Bastet Shelter Portal &nbsp;&middot;&nbsp; Marble Ceilings &nbsp;&middot;&nbsp; info@marbleceilings.com &nbsp;&middot;&nbsp; All submissions reviewed manually</p>
+</footer>
+
+<script>
+  function setType(type) {
+    document.getElementById('submission-type').value = type === 'new' ? 'New shelter' : 'Update existing listing';
+    document.getElementById('btn-new').classList.toggle('active', type === 'new');
+    document.getElementById('btn-update').classList.toggle('active', type === 'update');
+  }
+
+  document.getElementById('shelter-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const type = document.getElementById('submission-type').value;
+    const name = document.getElementById('shelter-name').value;
+    const city = document.getElementById('city').value;
+    const state = document.getElementById('state').value;
+    const addrPublic = document.querySelector('input[name="address-public"]:checked')?.value || 'Not specified';
+    const address = document.getElementById('address').value;
+    const phone = document.getElementById('phone').value;
+    const hotline = document.getElementById('hotline').value;
+    const pets = document.querySelector('input[name="pet-friendly"]:checked')?.value || 'Unknown';
+    const notes = document.getElementById('notes').value;
+    const subName = document.getElementById('submitter-name').value;
+    const subEmail = document.getElementById('submitter-email').value;
+
+    const subject = encodeURIComponent(`[Bastet] ${type}: ${name} — ${city}, ${state}`);
+    const body = encodeURIComponent(
+`Submission type: ${type}
+
+--- SHELTER INFORMATION ---
+Name: ${name}
+City: ${city}
+State: ${state}
+Address public: ${addrPublic}
+Address: ${address || 'Not provided'}
+Phone: ${phone || 'Not provided'}
+Hotline: ${hotline || 'Not provided'}
+Pet friendly: ${pets}
+
+--- NOTES ---
+${notes || 'None'}
+
+--- SUBMITTED BY ---
+Name: ${subName}
+Email: ${subEmail}`
+    );
+
+    window.location.href = `mailto:info@marbleceilings.com?subject=${subject}&body=${body}`;
+
+    document.getElementById('shelter-form').style.display = 'none';
+    document.getElementById('success').style.display = 'block';
+  });
+</script>
+
+</body>
+</html>
